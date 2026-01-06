@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Buy - Combo (Jacket + Jeans)</title>
+<title>Buy - Combo (T-shirt + Jeans)</title>
 <style>
   body {font-family: Arial, sans-serif; background:#f4f4f4; margin:0; padding:20px;}
   .card {max-width:720px; margin:30px auto; background:white; box-shadow:0 2px 6px rgba(0,0,0,0.12); border-radius:6px; padding:20px;}
@@ -28,9 +28,9 @@
 <body>
   <div class="card" id="orderForm">
     <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon Logo" class="logo">
-    <h2>Combo Offer: Premium Jacket + Jeans</h2>
+    <h2>Combo Offer: Premium T-shirt + Jeans</h2>
     <div class="price">₹650 (Combo)</div>
-    <div class="small">High-quality cotton Jacket T shirt and stretchable jeans. Fast shipping across India.</div>
+    <div class="small">High-quality cotton T-shirt and stretchable jeans. Fast shipping across India.</div>
 
     <div class="field">
       <label>Name</label>
@@ -39,7 +39,7 @@
 
     <div class="row">
       <div class="field">
-        <label> Jacket and T-shirt Size</label>
+        <label>T-shirt Size</label>
         <select id="tshirtSize">
           <option value="S">S</option>
           <option value="M" selected>M</option>
@@ -113,16 +113,10 @@ buyBtn.addEventListener('click', async () => {
 
   const payload = {
     name, phone, pincode, address,
-    JacketSize: document.getElementById('JacketSize').value,
+    tshirtSize: document.getElementById('tshirtSize').value,
     jeansSize: document.getElementById('jeansSize').value,
     price: "650"
   };
-
-</head>
-<body>
-<div class="small">High-quality cotton Jacket T shirt and stretchable jeans. Fast shipping across India.</div>
-
-
 
   const form = new FormData();
   for (let k in payload) form.append(k, payload[k]);
