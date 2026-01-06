@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Buy - Combo (Jacket + Jeans)</title>
+<style>
+  body {font-family: Arial, sans-serif; background:#f4f4f4; margin:0; padding:20px;}
+  .card {max-width:720px; margin:30px auto; background:white; box-shadow:0 2px 6px rgba(0,0,0,0.12); border-radius:6px; padding:20px;}
+  h2 {margin:10px 0 8px; text-align:center;}
+  .price {font-size:20px; color:#B12704; font-weight:700; margin:8px 0; text-align:center;}
+  .field {margin:10px 0;}
+  label {display:block; font-size:13px; margin-bottom:6px;}
+  select,input,textarea {width:100%; padding:8px; border:1px solid #ddd; border-radius:4px; box-sizing:border-box;}
+  .row {display:flex; gap:10px;}
+  .row > * {flex:1;}
+  .buybtn {background:#ff9900; color:#111; border:none; padding:12px 18px; font-size:16px; border-radius:6px; cursor:pointer; width:100%;}
+  .buybtn:hover {background:#e68a00;}
+  .buybtn:disabled {opacity:0.6; cursor:not-allowed;}
+  .status {margin-top:14px; font-weight:600; text-align:center;}
+  .processing {color:#0a66c2;}
+  .confirmed {color:green; font-size:28px; margin-top:20px; font-weight:bold;}
+  .logo {display:block; margin:0 auto 10px; width:120px;}
+  .thankyou {text-align:center; font-size:36px; color:green; font-weight:bold; margin-top:30px;}
+  .small {font-size:13px; color:#555; text-align:center;}
+</style>
+</head>
+<body>
+  <div class="card" id="orderForm">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon Logo" class="logo">
+    <h2>Combo Offer: Premium Jacket + Jeans</h2>
+    <div class="price">₹650 (Combo)</div>
+    <div class="small">High-quality cotton Jacket T shirt and stretchable jeans. Fast shipping across India.</div>
+
+    <div class="field">
+      <label>Name</label>
+      <input id="customerName" placeholder="Your name" required>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label> Jacket and T-shirt Size</label>
+        <select id="tshirtSize">
+          <option value="S">S</option>
+          <option value="M" selected>M</option>
+          <option value="L">L</option>
+          <option value="XL">XL</option>
+          <option value="XXL">XXL</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Jeans Waist (in inches)</label>
+        <select id="jeansSize">
+          <option>28</option><option>30</option><option selected>32</option>
+          <option>34</option><option>36</option><option>38</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label>Mobile / Phone</label>
+        <input id="phone" placeholder="Mobile number (10 digits)" inputmode="numeric">
+      </div>
+      <div class="field">
+        <label>Pincode</label>
+        <input id="pincode" placeholder="Pincode" inputmode="numeric">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Shipping Address</label>
+      <textarea id="address" rows="2" placeholder="Full address with city"></textarea>
+    </div>
+
+    <button id="buyBtn" class="buybtn">Buy Now</button>
+    <div id="status" class="status small"></div>
+  </div>
+
+  <div id="thankYouPage" style="display:none; text-align:center;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" class="logo">
+    <div class="thankyou">✅ Order Confirmed!</div>
+    <p style="font-size:20px;">We will contact you shortly with shipping details.</p>
+  </div>
+
+<script>
+// ✅ Aapka Google Apps Script Web App URL
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzSPTRfrL6pnK2JDdlaGjMx8IpdHNmxvZANbzUslXtEa8b1ZclCfWHZF4frCUX2AkSVqg/exec";
+
+const buyBtn = document.getElementById('buyBtn');
+const statusDiv = document.getElementById('status');
+const orderForm = document.getElementById('orderForm');
+const thankYouPage = document.getElementById('thankYouPage');
+
+function showStatus(msg, cls='') {
+  statusDiv.className = 'status small ' + cls;
+  statusDiv.textContent = msg;
+}
+
+buyBtn.addEventListener('click', async () => {
+  const name = document.getElementById('customerName').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const pincode = document.getElementById('pincode').value.trim();
+  const address = document.getElementById('address').value.trim();
+
+  if (!name || !phone || !pincode || !address) {
+    showStatus("Please fill all fields properly."); return;
+  }
+
+  buyBtn.disabled = true;
+  showStatus("Placing your order, please wait...", "processing");
+
+  const payload = {
+    name, phone, pincode, address,
+    JacketSize: document.getElementById('JacketSize').value,
+    jeansSize: document.getElementById('jeansSize').value,
+    price: "650"
+  };
+
+</head>
+<body>
+<div class="small">High-quality cotton Jacket T shirt and stretchable jeans. Fast shipping across India.</div>
+
+
+
+  const form = new FormData();
+  for (let k in payload) form.append(k, payload[k]);
+
+  try {
+    await fetch(WEB_APP_URL, { method: 'POST', body: form });
+    // Show confirmation immediately
+    orderForm.style.display = "none";
+    thankYouPage.style.display = "block";
+    // Auto refresh after 5 seconds
+    setTimeout(() => { location.reload(); }, 5000);
+  } catch (err) {
+    showStatus("Order failed. Please try again.");
+    buyBtn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
